@@ -1,37 +1,123 @@
-# E-Commerce Project For Baby Tools
+# Baby Tools Shop
 
-### TECHNOLOGIES
+## Table of Contents
+1. [Project Description](#project-description)
+2. [Quickstart](#quickstart)
+3. [Usage](#usage)
+4. [Docker](#docker)
+5. [Project Structure](#project-structure)
+6. [Contributing](#contributing)
+7. [License](#license)
 
-- Python 3.9
-- Django 4.0.2
-- Venv
+---
 
-### Hints
+## Project Description
+**Baby Tools Shop** is a Django-based e-commerce application for baby products.  
+The project demonstrates a fully containerized Django application using Docker, including:
 
-This section will cover some hot tips when trying to interacting with this repository:
+- Product management (products app)
+- User authentication and management (users app)
+- Media handling (images, uploads)
+- SQLite database for development
+- Ready for Docker deployment
 
-- Settings & Configuration for Django can be found in `babyshop_app/babyshop/settings.py`
-- Routing: Routing information, such as available routes can be found from any `urls.py` file in `babyshop_app` and corresponding subdirectories
+This repository provides all necessary files to run the project locally or on a server.
 
-### Photos
+---
 
-##### Home Page with login
+## Quickstart
 
-<img alt="" src="https://github.com/MET-DEV/Django-E-Commerce/blob/master/project_images/capture_20220323080815407.jpg"></img>
-##### Home Page with filter
-<img alt="" src="https://github.com/MET-DEV/Django-E-Commerce/blob/master/project_images/capture_20220323080840305.jpg"></img>
-##### Product Detail Page
-<img alt="" src="https://github.com/MET-DEV/Django-E-Commerce/blob/master/project_images/capture_20220323080934541.jpg"></img>
+### Prerequisites
+- [Docker](https://www.docker.com/) installed
+- Optional: Python 3.10+ if running locally without Docker
 
-##### Home Page with no login
-<img alt="" src="https://github.com/MET-DEV/Django-E-Commerce/blob/master/project_images/capture_20220323080953570.jpg"></img>
+### Steps
 
+1. Clone the repository:
 
-##### Register Page
+```bash
+git clone <YOUR_REPO_URL>
+cd baby-tools-shop
+```
+2. Build Docker image:
 
-<img alt="" src="https://github.com/MET-DEV/Django-E-Commerce/blob/master/project_images/capture_20220323081016022.jpg"></img>
+```bash
+docker build -t babyshop-app .
+```
+3. Run Docker container:
 
+```bash
+docker run -it -p 8000:8000 babyshop-app
+```
+4. Open your browser and go to:
 
-##### Login Page
+```bash
+http://<server IP Address>:8000
+```
+5. (Optional) Run database migrations manually inside the container:
 
-<img alt="" src="https://github.com/MET-DEV/Django-E-Commerce/blob/master/project_images/capture_20220323081044867.jpg"></img>
+```bash
+docker exec -it <container_name> python manage.py migrate
+```
+---
+
+##Usage
+
+- The main entry point is the Django admin and the shop interface.
+- To create superuser for admin:
+
+```bash
+docker exec -it <container_name> python manage.py createsuperuser
+```
+- Media files are stored in media/.
+- Static files can be collected manually:
+
+```bash
+docker exec -it <container_name> python manage.py collectstatic --noinput
+```
+- To stop the server: press CTRL+C inside the container or use docker stop <container_name>.
+- Configuration files:
+	- Django settings are in babyshop_app/babyshop/settings.py
+	- Sensitive information like passwords or tokens should be stored in environment variables or a .env file.
+
+---
+
+##Docker
+
+- Base image: python:3.10-slim
+- Exposed port: 8000
+- Dependencies installed automatically from requirements.txt
+- Container runs Django development server on startup
+- Migration is not automatic; run manually if needed
+
+---
+##Project Structure
+baby-tools-shop/
+│
+├─ babyshop_app/
+│   ├─ babyshop/
+│   │   └─ settings.py
+│   ├─ manage.py
+│   ├─ products/
+│   ├─ users/
+│   ├─ media/
+│   └─ templates/
+│
+├─ Dockerfile
+├─ requirements.txt
+├─ README.md
+├─ .gitignore
+└─ project_images/
+
+---
+##Contributing
+
+- Fork the repository and create a branch for new features or bug fixes.
+- Follow standard Django and Python conventions.
+- Ensure Docker builds and runs properly after changes.
+- Do not commit sensitive information to GitHub.
+
+---
+##License
+
+This project is licensed under the MIT License.
