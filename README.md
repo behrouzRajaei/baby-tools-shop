@@ -54,32 +54,36 @@ docker run -it -p 8000:8000 babyshop-app
 ```bash
 http://<server IP Address>:8000
 ```
-5. (Optional) Run database migrations manually inside the container:
-
-```bash
-docker exec -it <container_name> python manage.py migrate
-```
 ---
 
 ##Usage
 
-- The main entry point is the Django admin and the shop interface.
-- To create superuser for admin:
+Once the container is running:
 
-```bash
-docker exec -it <container_name> python manage.py createsuperuser
+Application is available at:
+
 ```
-- Media files are stored in media/.
-- Static files can be collected manually:
-
-```bash
-docker exec -it <container_name> python manage.py collectstatic --noinput
+http://localhost:8000
 ```
-- To stop the server: press CTRL+C inside the container or use docker stop <container_name>.
-- Configuration files:
-	- Django settings are in babyshop_app/babyshop/settings.py
-	- Sensitive information like passwords or tokens should be stored in environment variables or a .env file.
 
+Django admin is available at:
+
+```
+http://localhost:8000/admin
+```
+
+You can log in with the superuser credentials (if created).
+
+When the container starts, the entrypoint.sh script runs automatically.
+This script performs the following steps:
+
+- Applies database migrations (python manage.py migrate)
+
+- Collects static files (python manage.py collectstatic --noinput)
+
+- Starts the Django development server (python manage.py runserver 0.0.0.0:8000)
+
+So you don’t need to run these commands manually – everything is handled inside the container.
 ---
 
 ##Docker
@@ -88,27 +92,170 @@ docker exec -it <container_name> python manage.py collectstatic --noinput
 - Exposed port: 8000
 - Dependencies installed automatically from requirements.txt
 - Container runs Django development server on startup
-- Migration is not automatic; run manually if needed
 
 ---
 ##Project Structure
+```
 baby-tools-shop/
 │
 ├─ babyshop_app/
 │   ├─ babyshop/
-│   │   └─ settings.py
+│   │   ├─ asgi.py 
+│   │   ├─ __init__.py
+│   │   ├─ __pycache__/
+│   │   │   ├─ __init__.cpython-310.pyc
+│   │   │   ├─ settings.cpython-310.pyc
+│   │   │   ├─ urls.cpython-310.pyc
+│   │   │   ├─ wsgi.cpython-310.pyc
+│   │   │   ├─ __init__.cpython-312.pyc
+│   │   │   ├─ settings.cpython-312.pyc
+│   │   │   ├─ urls.cpython-312.pyc
+│   │   │   └─ wsgi.cpython-312.pyc
+│   │   ├─ settings.py
+│   │   ├─ urls.py
+│   │   └─ wsgi.py
+│   ├─ db.sqlite3
 │   ├─ manage.py
-│   ├─ products/
-│   ├─ users/
 │   ├─ media/
-│   └─ templates/
-│
+│   │   └─ products/
+│   │       └─ 2025/
+│   │           └─ 08/
+│   │               └─ 19/
+│   │                   ├─ Animal_Print_Onesie.jpg
+│   │                   ├─ Classic_Baby_Bottle.jpg
+│   │                   ├─ Sensitive_Skin_Wipes.jpg
+│   │                   ├─ Stacking_Blocks.jpg
+│   │                   ├─ Anti-Colic_Bottle.jpg
+│   │                   ├─ Newborn_Diapers.jpg
+│   │                   ├─ Silicone_Nipple_Set.jpg
+│   │                   ├─ Striped_Baby_Onesie.jpg
+│   │                   ├─ Baby_feeding_Spoon.jpg
+│   │                   ├─ Plush_Teddy_Bear.jpg
+│   │                   ├─ Sleeveless_Onesie.jpg
+│   │                   ├─ Teething_Ring.jpg
+│   │                   ├─ Baby_Wipes.jpg
+│   │                   ├─ Rattle_Set.jpg
+│   │                   ├─ Soft_Cotton_Onesie.jpg
+│   │                   └─ Toddler_Diapers.jpg
+│   ├─ products/
+│   │   ├─ admin.py
+│   │   ├─ apps.py
+│   │   ├─ __init__.py
+│   │   ├─ migrations/
+│   │   │   ├─0001_initial.py
+│   │   │   ├─0003_alter_product_name.py
+│   │   │   ├─0005_rename_describtion_product_description.py
+│   │   │   ├─__pycache__/
+│   │   │   │  ├─0001_initial.cpython-310.pyc
+│   │   │   │  ├─0004_category_product_category.cpython-310.pyc
+│   │   │   │  ├─0001_initial.cpython-312.pyc
+│   │   │   │  ├─0004_category_product_category.cpython-312.pyc
+│   │   │   │  ├─0002_product_price.cpython-310.pyc
+│   │   │   │  ├─0005_rename_describtion_product_description.cpython-310.pyc
+│   │   │   │  ├─0002_product_price.cpython-312.pyc
+│   │   │   │  ├─0005_rename_describtion_product_description.cpython-312.pyc
+│   │   │   │  ├─0003_alter_product_name.cpython-310.pyc
+│   │   │   │  ├─__init__.cpython-310.pyc
+│   │   │   │  ├─0003_alter_product_name.cpython-312.pyc
+│   │   │   │  └─__init__.cpython-312.pyc
+│   │   │   ├─0002_product_price.py
+│   │   │   ├─0004_category_product_category.py
+│   │   │   └─__init__.py
+│   │   ├─ models.py
+│   │   ├─ __pycache__/
+│   │   │   ├─ admin.cpython-310.pyc
+│   │   │   ├─ apps.cpython-312.pyc
+│   │   │   ├─ models.cpython-310.pyc
+│   │   │   ├─ urls.cpython-312.pyc
+│   │   │   ├─ admin.cpython-312.pyc
+│   │   │   ├─ __init__.cpython-310.pyc
+│   │   │   ├─ models.cpython-312.pyc
+│   │   │   ├─ views.cpython-310.pyc
+│   │   │   ├─ apps.cpython-310.pyc
+│   │   │   ├─ __init__.cpython-312.pyc
+│   │   │   ├─ urls.cpython-310.pyc
+│   │   │   └─ views.cpython-312.pyc
+│   │   ├─ tests.py
+│   │   ├─ urls.py
+│   │   └─ views.py
+│   │
+│   ├─ templates/
+│   │   ├─ login.html
+│   │   ├─ partoftemp/
+│   │   │   ├─ _dashboard.html 
+│   │   │   └─ footer.html
+│   │   ├─ product.html
+│   │   ├─ products.html
+│   │   └─ register.html
+│   └─ users/
+│       ├─ admin.py
+│       ├─ apps.py
+│       ├─ forms.py
+│       ├─ __init__.py
+│       ├─ migrations/
+│       │   ├─ __init__.py
+│       │   └─ __pycache__/
+│       │       ├─ __init__.cpython-310.pyc 
+│       │       └─ __init__.cpython-312.pyc
+│       ├─ models.py
+│       ├─ __pycache__/
+│       │   ├─ admin.cpython-310.pyc
+│       │   ├─ apps.cpython-312.pyc
+│       │   ├─ __init__.cpython-310.pyc
+│       │   ├─ models.cpython-312.pyc
+│       │   ├─ views.cpython-310.pyc
+│       │   ├─ admin.cpython-312.pyc
+│       │   ├─ forms.cpython-310.pyc
+│       │   ├─ __init__.cpython-312.pyc
+│       │   ├─ urls.cpython-310.pyc
+│       │   ├─ views.cpython-312.pyc
+│       │   ├─ apps.cpython-310.pyc
+│       │   ├─ forms.cpython-312.pyc
+│       │   ├─ models.cpython-310.pyc
+│       │   └─ urls.cpython-312.pyc
+│       ├─ tests.py
+│       ├─ urls.py
+│       └─ views.py
 ├─ Dockerfile
-├─ requirements.txt
+├─ entrypoint.sh
+├─ LICENSE
+├─ project_images/
+│   ├─ 'Animal Print Onesie.jpg'
+│   ├─capture_20220323080934541.jpg
+│   ├─'Onesite1 - Copy.jpg:Zone.Identifier'
+│   ├─'Sleeveless Onesie.jpg'
+│   ├─'Anti-Colic Bottle.jpg'
+│   ├─ capture_20220323080953570.jpg
+│   ├─ Onesite1.jpg
+│   ├─ 'Soft Cotton Onesie.jpg'
+│   ├─ 'Baby feeding Spoon.jpg'
+│   ├─ capture_20220323081016022.jpg
+│   ├─ 'Plush Teddy Bear.jpg'
+│   ├─ 'Stacking Blocks.jpg'
+│   ├─ 'Baby Wipes.jpg'
+│   ├─ capture_20220323081044867.jpg
+│   ├─ 'Rattle Set.jpg'
+│   ├─ 'Striped Baby Onesie.jpg'
+│   ├─ capture_20220323080815407.jpg
+│   ├─ 'Classic Baby Bottle.jpg'
+│   ├─ 'Sensitive Skin Wipes.jpg'
+│   ├─ 'Teething Ring.jpg'
+│   ├─ capture_20220323080840305.jpg
+│   ├─'Newborn Diapers.jpg'
+│   ├─'Silicone Nipple Set.jpg'
+│   └─'Toddler Diapers.jpg' 
 ├─ README.md
-├─ .gitignore
-└─ project_images/
-
+├─ requirements.txt
+├─ venv/
+│    ├─ bin/
+│    ├─ include/
+│    ├─ lib/
+│    ├─ lib64/
+│    └─ pyvenv.cfg
+├─ .env
+├─ .env.example
+└─ .gitignore
+```
 ---
 ##Contributing
 
