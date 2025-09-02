@@ -46,7 +46,7 @@ cd baby-tools-shop
 
 ```bash
 docker build -t babyshop-app .
-docker run -it -p 8000:8000 --env-file .env babyshop-app
+docker run -it -p 8025:8000 --env-file .env babyshop-app
 ```
 
 The app will be available at:
@@ -125,7 +125,6 @@ Before submission, ensure:
 
 - The app is reachable at:
 
-<<<<<<< HEAD
 ```
 http://<server-ip>:8025
 ```
