@@ -125,6 +125,7 @@ Before submission, ensure:
 
 - The app is reachable at:
 
+<<<<<<< HEAD
 ```
 http://<server-ip>:8025
 ```
@@ -134,6 +135,6 @@ http://123.234.34.45:8025
 You can log in to the application using the following test credentials:
 
 - **Username:** testuser
-- **Password:** Test1234!
+- **Password:** test1234!
 
 ---

@@ -1,10 +1,14 @@
 #!/bin/sh
 
+# Change directory to babyshop_app where manage.py exists
+cd /app/babyshop_app
+
 echo "Applying database migrations..."
-python manage.py migrate
+python manage.py migrate --noinput
 
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
 echo "Starting server..."
-python manage.py runserver 0.0.0.0:8000
+exec python manage.py runserver 0.0.0.0:8000
+

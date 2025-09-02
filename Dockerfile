@@ -1,16 +1,16 @@
 # Base image
 FROM python:3.10-slim
 
-# Environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Env vars
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Set work directory
+# Set working directory to root inside container
 WORKDIR /app
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libpq-dev gcc python3-dev musl-dev \
+    gcc python3-dev musl-dev libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install
@@ -25,3 +25,4 @@ EXPOSE 8000
 
 # Entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
+

@@ -1,0 +1,19 @@
+<!-- Footer HTML -->
+<footer id="site-footer" style="opacity: 0; transition: opacity 1s; background:#333; color:#fff; padding:20px; text-align:center;">
+  © 2025 Baby Tools Shop. All rights reserved.
+</footer>
+
+<script>
+  // Show the footer when the user scrolls to the bottom
+  window.addEventListener('scroll', function() {
+    const footer = document.getElementById('site-footer');
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const documentHeight = document.body.offsetHeight;
+
+    if (scrollPosition >= documentHeight - 50) { // near the bottom
+      footer.style.opacity = 1;
+    } else {
+      footer.style.opacity = 0;
+    }
+  });
+</script>
