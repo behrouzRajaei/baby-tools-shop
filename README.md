@@ -126,7 +126,7 @@ Before submission, ensure:
 - The app is reachable at:
 
 ```
-http://server-ip:8025
+http://<server-ip>:8025
 ```
 Example:
 http://123.234.34.45:8025
