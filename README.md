@@ -50,8 +50,10 @@ docker run -it -p 8025:8000 --env-file .env babyshop-app
 ```
 
 The app will be available at:
-http://<your-server-ip>:8000
 
+```
+http://<your-server-ip>:8025
+```
 ---
 
 ## 3. Usage
