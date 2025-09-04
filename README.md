@@ -7,12 +7,13 @@ The project is containerized with Docker and follows clean code conventions.
 
 ## Table of Contents
 1. [Repository](#repository)
-2. [Quickstart](#quickstart)
-3. [Usage](#usage)
-4. [Documentation](#documentation)
-5. [Security Notes](#security-notes)
-6. [Code Conventions](#code-conventions)
-7. [Testing](#testing)
+2. [Prerequisites](#prerequisites)
+3. [Quickstart](#quickstart)
+4. [Usage](#usage)
+5. [Documentation](#documentation)
+6. [Security Notes](#security-notes)
+7. [Code Conventions](#code-conventions)
+8. [Testing](#testing)
 
 ---
 
@@ -30,63 +31,91 @@ No unnecessary files are included in the repository.
 
 ---
 
-## 2. Quickstart
-### Requirements
+## 2. Prerequisites
+
+Before running the application, make sure you have installed:
+
 - Docker installed on your system
 
-### Run the app
+- Git installed to clone the repository
+
+---
+
+## 3. Quickstart
+
+# Clone the repository
 
 ```bash
-# Clone the repository
-git clone -b development git@github.com:behrouzRajaei/baby-tools-shop.git
+git clone https://github.com:behrouzRajaei/baby-tools-shop.git
 cd baby-tools-shop
+```
+
+# Prepare the environment file
+
+```bash
+cp .env.example .env
 ```
 
 # Build and run the container
 
 ```bash
 docker build -t babyshop-app .
-docker run -it -p 8025:8000 --env-file .env babyshop-app
+docker run -it -p 8025:8000 --env-file .env \
+-v $(pwd)/project_images:/app/project_images \
+babyshop-app
 ```
 
-The app will be available at:
+# The app will be available at:
 
 ```
-http://<your-server-ip>:8025
+http://<server-ip>:8025
 ```
 ---
 
-## 3. Usage
+## 4. Usage
 
-The container automatically handles:
+### Admin access
 
-- Installing dependencies
-
-- Applying database migrations
-
-- Collecting static files
-
-- Starting the Django server
-
-### Configuration:
-
-- Copy .env.example → .env
-
-- Adjust values like SECRET_KEY, DEBUG, ALLOWED_HOSTS, and database settings.
-
-Example:
- SECRET_KEY=your_secret_key
- DEBUG=False
- ALLOWED_HOSTS=127.0.0.1,localhost
- If you need to run migrations manually:
-
+# Create a superuser:
 ```bash
-docker exec -it <container_name> python manage.py migrate
+docker exec -it <container_name> python manage.py createsuperuser
 ```
+# Login at:
+```
+http://<server-ip>:8025/admin
+```
+# From here you can:
 
+- Add categories
+
+- Add products
+
+- Manage users
+
+### Configuration
+
+# All sensitive settings are stored in .env. Adjust values like:
+
+- SECRET_KEY
+
+- DEBUG
+
+- ALLOWED_HOSTS
+
+- Database settings
+
+### Container configuration
+
+- Data such as uploaded images is persisted with Docker volumes.
+
+- To stop the container:
+```bash
+docker ps
+docker stop <container_id>
+```
 ---
 
-## 4. Documentation
+## 5. Documentation
 
 - Project and code documentation is provided inside this README.md.
 
@@ -94,30 +123,30 @@ docker exec -it <container_name> python manage.py migrate
 
 ---
 
-## 5. Security Notes
+## 6. Security Notes
 
 - No passwords, tokens, or sensitive data are stored in the repository.
 
-- Use .env file for environment variables.
+- Example data is only provided via .env.example.
 
-- No SSH keys or secrets included.
+- No login credentials or server IPs are committed.
 
 ---
 
-## 6. Code Conventions
+## 7. Code Conventions
 
 - Environment variables use UPPER_CASE_WITH_UNDERSCORE
   Example: SECRET_KEY, DEBUG, ALLOWED_HOSTS
 
 - Always reference variables with ${VAR_NAME} (not $VAR_NAME) to avoid errors.
 
-- Provide default values only if they make sense (never for secrets).
+- Always use ${VAR_NAME} in configs.
 
 - Sensitive configs (tokens, passwords) are only stored in .env, never in the codebase.
 
 ---
 
-## 7. Testing
+## 8. Testing
 
 Before submission, ensure:
 
@@ -125,17 +154,6 @@ Before submission, ensure:
 
 - The Docker container builds successfully.
 
-- The app is reachable at:
-
-```
-http://<server-ip>:8025
-```
-Example:
-http://123.234.34.45:8025
-
-You can log in to the application using the following test credentials:
-
-- **Username:** testuser
-- **Password:** test1234!
+- The app is reachable at http://<server-ip>:8025
 
 ---
